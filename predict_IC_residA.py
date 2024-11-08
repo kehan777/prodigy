@@ -307,14 +307,19 @@ class Prodigy:
         )
 
         # loop over interfaces construct selection strings
-        #  and write interface related commands
+        #  and write interface related commands   #edit20241108
+        # for color, iface in [("blue", 1), ("hotpink", 2)]:
+        #     p_sel_string = " or ".join(
+        #         [
+        #             "chain {} and resi {}".format(c, "+".join(chains[c]))
+        #             for c in selection_strings[iface - 1].split("+")
+        #         ]
+        #     )
         for color, iface in [("blue", 1), ("hotpink", 2)]:
             p_sel_string = " or ".join(
                 [
-                    "chain {} and resi {}".format(c, "+".join(chains[c]))
-                    for c in selection_strings[iface - 1].split("+")
-                ]
-            )
+                    "chain {} and resi {}".format(c, "+".join(sorted(chains[c])).replace(" ", "")) for c in selection_strings[iface - 1].split("+")
+    ])
             handle.write("select iface{},  {}\n".format(iface, p_sel_string))
             handle.write("color {}, iface{}\n".format(color, iface))
             handle.write("show sticks, iface{}\n".format(iface))
